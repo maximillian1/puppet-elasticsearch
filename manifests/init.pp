@@ -1,11 +1,13 @@
 class elasticsearch {
 
 	# If it doesnt work, manually do sudo apt-get -f install
-	package { ["openjdk-6-jre"]:
-			ensure => installed,
-			require => Class['apt']
+	if ! defined(Package['openjdk-6-jre']) {
+		package { ["openjdk-6-jre"]:
+				ensure => installed,
+				require => Class['apt']
+		}
 	}
-
+	
 	exec { 'wget elasticsearch':
 				command => "wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.7.deb -O elasticsearch.deb",
 				unless => "ls | grep elasticsearch.deb"
